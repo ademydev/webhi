@@ -11,19 +11,18 @@ const UI = (() => {
   function buildMenu() {
     const grid = $('level-grid');
     grid.innerHTML = '';
-    const unlocked = Math.min(Store.unlocked, LEVELS.length);
+    const progress = Math.min(Store.unlocked, LEVELS.length);
     LEVELS.forEach((lv, i) => {
       const b = document.createElement('button');
       b.type = 'button';
-      b.className = 'lv' + (i < unlocked - 1 ? ' done' : '') + (i >= unlocked ? ' locked' : '');
-      b.disabled = i >= unlocked;
+      b.className = 'lv' + (i < progress - 1 ? ' done' : '');
       b.innerHTML = '<span class="n">' + (i + 1) + '</span><span class="t"></span>';
-      b.querySelector('.t').textContent = i >= unlocked ? 'Kilitli' : lv.name;
+      b.querySelector('.t').textContent = lv.name;
       b.addEventListener('click', () => h.play(i));
       grid.appendChild(b);
     });
-    const next = Math.min(unlocked - 1, LEVELS.length - 1);
-    $('btn-continue').textContent = unlocked === 1 ? 'Oyuna başla' : 'Devam et: ' + (next + 1) + '. bölüm';
+    const next = Math.min(progress - 1, LEVELS.length - 1);
+    $('btn-continue').textContent = progress === 1 ? 'Oyuna başla' : 'Devam et: ' + (next + 1) + '. bölüm';
     $('btn-continue').onclick = () => h.play(next);
   }
 

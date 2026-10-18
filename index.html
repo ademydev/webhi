@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Hayalet ve İnsan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=DM+Sans:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<!-- BODY:START -->
+<div id="app">
+  <section id="menu" class="screen active" aria-label="Ana menü">
+    <div class="menu-inner">
+      <h1>Hayalet <span>ve</span> İnsan</h1>
+      <p class="lead">İki kişilik iş birliği oyunu. İnsan kutuları iter ve düğmelere basar. Hayalet duvarların içinden geçer ama kurşuna ve tuza takılır. İkisi de aynı anda kendi çıkışında durunca bölüm biter.</p>
+      <div class="menu-actions">
+        <button id="btn-continue" class="btn primary" type="button">Oyuna başla</button>
+      </div>
+
+      <div class="how">
+        <div class="how-card human">
+          <h3>1. oyuncu: İnsan</h3>
+          <p class="keys"><kbd>A</kbd><kbd>D</kbd> yürü <kbd>W</kbd> zıpla</p>
+          <p>Dikenden kaçar, kutuyu iter, düğmeye basar.</p>
+        </div>
+        <div class="how-card ghost">
+          <h3>2. oyuncu: Hayalet</h3>
+          <p class="keys"><kbd>←</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>→</kbd> süzül</p>
+          <p>Duvardan geçer, plakalara dokunur, tuzdan kaçar.</p>
+        </div>
+      </div>
+      <p class="note touch-only">Telefonda ekranın iki yanındaki tuşlar kullanılır. Yatay tutmak daha rahattır.</p>
+
+      <h2>Bölümler</h2>
+      <div id="level-grid" class="level-grid"></div>
+      <button id="btn-reset" class="link" type="button">İlerlemeyi sıfırla</button>
+    </div>
+  </section>
+
+  <section id="game" class="screen" aria-label="Oyun">
+    <header class="hud">
+      <button id="btn-menu" class="hbtn" type="button" aria-label="Menü">Menü</button>
+      <div class="hud-mid">
+        <strong id="hud-title"></strong>
+        <span id="hud-hint"></span>
+      </div>
+      <span id="hud-deaths" class="deaths"></span>
+      <button id="btn-restart" class="hbtn" type="button" aria-label="Bölümü yeniden başlat">Yeniden</button>
+    </header>
+    <div class="stage">
+      <div class="pad pad-h" aria-label="İnsan tuşları">
+        <span class="pad-label">İnsan</span>
+        <div class="pad-h-grid">
+          <button class="tb" data-act="hLeft" type="button" aria-label="Sola">◀</button>
+          <button class="tb" data-act="hRight" type="button" aria-label="Sağa">▶</button>
+          <button class="tb jump" data-act="hJump" type="button" aria-label="Zıpla">ZIPLA</button>
+        </div>
+      </div>
+      <div id="stage-wrap" class="canvas-wrap"><canvas id="stage-canvas"></canvas></div>
+      <div class="pad pad-g" aria-label="Hayalet tuşları">
+        <span class="pad-label">Hayalet</span>
+        <div class="pad-g-grid">
+          <button class="tb up" data-act="gUp" type="button" aria-label="Yukarı">▲</button>
+          <button class="tb lf" data-act="gLeft" type="button" aria-label="Sola">◀</button>
+          <button class="tb rt" data-act="gRight" type="button" aria-label="Sağa">▶</button>
+          <button class="tb dn" data-act="gDown" type="button" aria-label="Aşağı">▼</button>
+        </div>
+      </div>
+    </div>
+    <p class="legend">İnsan <kbd>A</kbd><kbd>D</kbd><kbd>W</kbd> · Hayalet <kbd>←</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>→</kbd> · <kbd>R</kbd> yeniden · <kbd>Esc</kbd> menü</p>
+
+    <div id="win" class="overlay" role="dialog" aria-labelledby="win-title">
+      <div class="panel">
+        <h2 id="win-title">Bölüm tamam</h2>
+        <p id="win-text"></p>
+        <div class="panel-actions">
+          <button id="win-next" class="btn primary" type="button">Sonraki bölüm</button>
+          <button id="win-again" class="btn" type="button">Tekrar oyna</button>
+          <button id="win-menu" class="btn" type="button">Menü</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- BODY:END -->
+<script src="js/storage.js"></script>
+<script src="js/levels.js"></script>
+<script src="js/objects.js"></script>
+<script src="js/physics.js"></script>
+<script src="js/input.js"></script>
+<script src="js/player.js"></script>
+<script src="js/renderer.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+/* Yerleşim: tek ekranlı oyun. Üstte bar, ortada sahne; dokunmatik cihazda tuş takımları
+   yatayda sahnenin iki yanında, dikeyde sahnenin altında yan yana durur. */
+:root {
+  --bg: #0d1121;
+  --panel: #161c36;
+  --panel-2: #1e2646;
+  --line: #2c3660;
+  --ink: #e9ecf7;
+  --muted: #98a2c6;
+  --human: #f2a65a;
+  --ghost: #86e0cf;
+  --danger: #ef5a67;
+  --font-display: 'Bricolage Grotesque', 'Trebuchet MS', system-ui, sans-serif;
+  --font-body: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --b: clamp(44px, 12vmin, 68px);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.45;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+  -webkit-user-select: none; user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+kbd {
+  display: inline-block; min-width: 1.7em; padding: 1px 6px; margin: 0 2px;
+  border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 6px;
+  background: var(--panel-2); font: 700 12px var(--font-body); text-align: center; color: var(--ink);
+}
+:focus-visible { outline: 2px solid var(--ghost); outline-offset: 2px; }
+
+#app { position: relative; height: 100%; }
+.screen {
+  position: absolute; inset: 0; display: none;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.screen.active { display: flex; }
+
+/* ---------- Menü ---------- */
+#menu { overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; justify-content: center; touch-action: pan-y; }
+.menu-inner { width: 100%; max-width: 760px; padding-block: 28px 40px; margin: auto; min-width: 0; }
+h1 {
+  margin: 0 0 10px; font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(40px, 9vw, 72px); line-height: 1; letter-spacing: -0.02em; text-wrap: balance;
+}
+h1 span { color: var(--ghost); font-weight: 600; }
+h2 { font-family: var(--font-display); font-size: 20px; margin: 30px 0 12px; }
+.lead { max-width: 62ch; color: var(--muted); margin: 0 0 20px; }
+.menu-actions { margin-bottom: 22px; }
+.btn {
+  min-height: 46px; padding: 0 22px; border-radius: 12px; border: 1px solid var(--line);
+  background: var(--panel-2); font-weight: 700;
+}
+.btn:hover { border-color: var(--muted); }
+.btn.primary { background: var(--ghost); border-color: var(--ghost); color: #06241f; }
+.btn.primary:hover { filter: brightness(1.07); }
+.link { background: none; border: 0; color: var(--muted); text-decoration: underline; padding: 14px 0 0; font-size: 13px; }
+
+.how { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.how-card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; min-width: 0; }
+.how-card h3 { margin: 0 0 6px; font-family: var(--font-display); font-size: 16px; }
+.how-card.human h3 { color: var(--human); }
+.how-card.ghost h3 { color: var(--ghost); }
+.how-card p { margin: 0 0 6px; color: var(--muted); font-size: 14px; }
+.how-card .keys { color: var(--ink); }
+.note { color: var(--muted); font-size: 13px; margin: 12px 0 0; }
+.touch-only { display: none; }
+body.touch .touch-only { display: block; }
+
+.level-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 10px; }
+.lv {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
+  padding: 10px 12px; min-height: 72px; text-align: left; min-width: 0;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+}
+.lv:hover:not(:disabled) { border-color: var(--ghost); }
+.lv .n { font: 800 24px/1 var(--font-display); }
+.lv .t { font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
+.lv.done .n { color: var(--ghost); }
+.lv.locked { opacity: 0.45; cursor: not-allowed; }
+
+/* ---------- Oyun ---------- */
+#game { flex-direction: column; }
+.hud {
+  display: flex; align-items: center; gap: 10px; min-height: 46px; padding-block: 6px;
+  padding-top: max(6px, env(safe-area-inset-top, 0px));
+}
+.hud-mid { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
+.hud-mid strong { font-family: var(--font-display); font-size: 16px; }
+.hud-mid span { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.deaths { font-size: 12px; color: var(--danger); white-space: nowrap; }
+.hbtn { height: 34px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--line); background: var(--panel-2); font-size: 13px; font-weight: 700; }
+
+.stage { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr; grid-template-areas: "canvas"; }
+.canvas-wrap { grid-area: canvas; position: relative; min-width: 0; min-height: 0; overflow: hidden; }
+#stage-canvas { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: block; border-radius: 6px; }
+.legend { margin: 0; padding: 8px 0 max(10px, env(safe-area-inset-bottom, 0px)); text-align: center; font-size: 12px; color: var(--muted); }
+body.touch .legend { display: none; }
+
+/* ---------- Dokunmatik tuşlar ---------- */
+.pad { display: none; align-items: center; justify-content: center; flex-direction: column; gap: 6px; touch-action: none; padding: 4px; }
+body.touch .pad { display: flex; }
+.pad-h { grid-area: left; }
+.pad-g { grid-area: right; }
+.pad-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; }
+.pad-h .pad-label { color: var(--human); }
+.pad-g .pad-label { color: var(--ghost); }
+.pad-h-grid { display: grid; grid-template-columns: repeat(2, var(--b)); gap: 8px; }
+.pad-g-grid { display: grid; grid-template-columns: repeat(3, var(--b)); grid-template-rows: repeat(2, var(--b)); gap: 8px; }
+.pad-g-grid .up { grid-column: 2; grid-row: 1; }
+.pad-g-grid .lf { grid-column: 1; grid-row: 2; }
+.pad-g-grid .dn { grid-column: 2; grid-row: 2; }
+.pad-g-grid .rt { grid-column: 3; grid-row: 2; }
+.tb {
+  width: 100%; height: var(--b); border-radius: 16px; font-size: 20px; font-weight: 800;
+  background: rgba(30, 38, 70, 0.85); border: 2px solid var(--line); touch-action: none;
+  display: flex; align-items: center; justify-content: center; padding: 0;
+}
+.pad-h .tb { border-color: rgba(242, 166, 90, 0.5); }
+.pad-g .tb { border-color: rgba(134, 224, 207, 0.5); }
+.tb.jump { grid-column: 1 / -1; font-size: 13px; letter-spacing: 0.1em; }
+.pad-h .tb.on { background: var(--human); color: #2b1604; }
+.pad-g .tb.on { background: var(--ghost); color: #06241f; }
+
+body.touch .stage { grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "left canvas right"; }
+@media (orientation: portrait) {
+  body.touch .stage { grid-template-columns: 1fr 1fr; grid-template-rows: minmax(0, 1fr) auto; grid-template-areas: "canvas canvas" "left right"; }
+  body.touch .pad { padding-bottom: max(10px, env(safe-area-inset-bottom, 0px)); }
+}
+
+/* ---------- Bölüm sonu ---------- */
+.overlay { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(8, 11, 24, 0.72); padding: 16px; z-index: 5; }
+.overlay.open { display: flex; }
+.panel { width: min(100%, 380px); background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 22px; text-align: center; }
+.panel h2 { margin: 0 0 4px; font-size: 26px; }
+.panel p { margin: 0 0 16px; color: var(--muted); }
+.panel-actions { display: flex; flex-direction: column; gap: 8px; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+@media (orientation: portrait) {
+  .hud-mid span { white-space: normal; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+}
